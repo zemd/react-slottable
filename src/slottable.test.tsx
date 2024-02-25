@@ -37,11 +37,11 @@ describe("slottable", () => {
     );
     const { getByText } = render(
       <Component className={undefined}>
-        <div data-testid="test-child">Test child</div>
+        <div data-testid="test-child">Test child 1</div>
       </Component>
     );
     expect(typeof Component).toBe("object"); // slottable returns Exotic component
-    expect(getByText("Test child")).toBeInTheDocument();
+    expect(getByText("Test child 1")).toBeInTheDocument();
   });
 
   test("should accept null as a valid value for className prop", () => {
@@ -52,10 +52,10 @@ describe("slottable", () => {
     );
     const { getByText } = render(
       <Component className={null}>
-        <div data-testid="test-child">Test child</div>
+        <div data-testid="test-child">Test child 2</div>
       </Component>
     );
     expect(typeof Component).toBe("object"); // slottable returns Exotic component
-    expect(getByText("Test child")).toBeInTheDocument();
+    expect(getByText("Test child 2")).toBeInTheDocument();
   });
 });
