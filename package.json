@@ -1,7 +1,7 @@
 {
   "name": "@zemd/react-slottable",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "Apache-2.0",
   "description": "Foundation for component libraries with highly customizable approach",
   "main": "dist/index.cjs",
@@ -39,10 +39,13 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "release": "changesets"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
     "@types/bun": "latest",
     "@types/react": "^18.2.58",
     "@zemd/tsconfig": "^1.2.0",
