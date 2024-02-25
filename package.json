@@ -1,0 +1,62 @@
+{
+  "name": "@zemd/react-slottable",
+  "type": "module",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "description": "Foundation for component libraries with highly customizable approach",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "author": {
+    "name": "Dmytro Zelenetskyi",
+    "email": "dmytro.zelenetskyi@gmail.com",
+    "url": "https://codeandgin.co"
+  },
+  "homepage": "https://github.com/zemd/react-slottable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zemd/react-slottable.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zemd/react-slottable/issues"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "library",
+    "slottable",
+    "slots",
+    "deeply customized"
+  ],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest --run"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@types/bun": "latest",
+    "@types/react": "^18.2.58",
+    "@zemd/tsconfig": "^1.2.0",
+    "happy-dom": "^13.5.0",
+    "react": "^18.2.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.3.3",
+    "vitest": "^1.3.1"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "bun@1.0.29"
+}
