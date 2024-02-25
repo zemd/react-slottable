@@ -39,7 +39,8 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "vitest --run"
+    "test": "vitest --run",
+    "release": "changesets"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
