@@ -168,7 +168,7 @@ export type PropsWithComponent<
  * Common props for components that usually all components have.
  */
 export interface TCommonProps {
-  className?: string;
+  className?: string | undefined | null;
   style?: CSSProperties;
   ref?: Ref<any>;
 }
