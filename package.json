@@ -44,6 +44,8 @@
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
     "@types/bun": "latest",
     "@types/react": "^18.2.58",
     "@zemd/tsconfig": "^1.2.0",
