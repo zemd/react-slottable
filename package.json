@@ -40,7 +40,7 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest --run",
-    "release": "changeset publish"
+    "release": "tsup && changeset publish"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
