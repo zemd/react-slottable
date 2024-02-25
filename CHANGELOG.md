@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 2.0.2
+
+### Patch Changes
+
+- 38cca2d: allowing undefined and null values as a valid values for className prop
+
 ## 2.0.1
 
 ### Patch Changes
