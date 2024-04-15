@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 2.0.3
+
+### Patch Changes
+
+- bd35fca: fixing imports for types
+
 ## 2.0.2
 
 ### Patch Changes
