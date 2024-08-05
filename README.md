@@ -138,6 +138,8 @@ export function HomePage() {
 
 The package exposes three essential parts: `slottable`, the `useSlot` hook, and the `TSlottablePropsFactory` typescript type. Combining them together, you get a backbone for your fantastic components.
 
+![Alt](https://repobeats.axiom.co/api/embed/d56a17dd8c7fcebf956925e2ac5be71d137e69d9.svg "Repobeats analytics image")
+
 ## License
 
 All the code in the repository released under the Apache 2.0 license
