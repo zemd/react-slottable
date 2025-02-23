@@ -1,8 +1,8 @@
-# React Slottable for advanced components
+# {{ title }}
 
-> Foundation for component libraries with highly customizable approach
+> {{ description }}
 
-[![](https://img.shields.io/npm/v/@zemd/react-slottable?color=%230000ff&labelColor=%23000)](https://www.npmjs.com/package/@zemd/react-slottable)
+{{ block badgeNpmVersion packageName="@zemd/react-slottable" color="#0000ff" labelColor="#000" }}
 
 The package provides a way to create your components in a customizable, easy-to-use, and maintainable way. Zero dependencies.
 
@@ -12,10 +12,7 @@ With it, you can build your own complex component libraries, composing different
 
 ## Installation
 
-```bash
-npm install --save-dev @zemd/react-slottable
-pnpm add -D @zemd/react-slottable
-```
+{{ block installation }}
 
 ## Writing components
 
@@ -153,8 +150,8 @@ The package exposes three essential parts: `slottable`, the `useSlot` hook, and 
 
 ## License
 
-The `@zemd/react-slottable` is licensed under **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)** 😇.
+{{ block license }}
 
 ## 💙 💛 Donate
 
-[![](https://img.shields.io/static/v1?color=blue&label=UNITED24&message=support+Ukraine)](https://u24.gov.ua/)
+{{ block donate}}
