@@ -1,12 +1,10 @@
-# React Slottable for advanced components
+# React Slottable for customizable components
 
-> Foundation for component libraries with highly customizable approach
+> A lightweight concept to customize subcomponents in React
 
 [![](https://img.shields.io/npm/v/@zemd/react-slottable?color=%230000ff&labelColor=%23000)](https://www.npmjs.com/package/@zemd/react-slottable)
 
-The package provides a way to create your components in a customizable, easy-to-use, and maintainable way. Zero dependencies.
-
-With it, you can build your own complex component libraries, composing different components without losing control over their internals, providing a great developer experience to your team.
+The package provides a lightweight approach to give your component users ability to customize it's subcomponents easily. The idea is highly inspired by [Material-UI](https://mui.com/x/common-concepts/custom-components/).
 
 ## Usage
 
@@ -19,128 +17,69 @@ pnpm add -D @zemd/react-slottable
 
 ## Writing components
 
-Just look at the example of such a `Button` built with the library:
+The core concept of the library is **slot**. A **slot** is a part of a component that can be overridden and/or customized. For example, you want to create a `Calendar`, but you do not want to create a numerous amount of props to customize nested components. Instead, you can divide your components on **slots** and provide your users with the ability to customize them.
 
-```typescript
-import {
-  type TSlottablePropsFactory,
-  slottable,
-  useSlot,
-  clsx
-} from "@zemd/react-slottable";
+Let's create a simple `Button` component with `startDecorator` and `endDecorator` slots to show how it works:
 
-type TButtonProps = TSlottablePropsFactory<
-  {
+```tsx
+import { type PropsWithSlots, useSlot } from "@zemd/react-slottable";
+
+type ButtonProps = PropsWithSlots<
+  React.PropsWithChildren<{
+    // here you define your regular component props
     fullWidth?: boolean;
     disabled?: boolean;
     size?: "sm" | "md" | "xl";
     variant?: "solid" | "outlined";
     color?: "primary" | "secondary";
-  },
-  "startDecorator" | "endDecorator" // this is how cool you can define your slots
-  // in case you want control the type of slots explicitly, you can use an object:
-  // { startDecorator: typeof MyCustomComponent, endDecorator: React.ElementType }
+    className?: string;
+  }>,
+  ["startDecorator", "endDecorator"] // here you define your slots
 >;
 
-export const Button = slottable<"button", TButtonProps>(
-  // params for the component are the same as you would expect from `forwardRef`
-  function Button(inProps, ref) {
-    const {
-      component = "button", // each Slottable component is overridable by default using `component` prop, if you don't need - just Omit it
-      className, // TSlottablePropsFactory provides `className` prop by default
-      children, // TSlottablePropsFactory provides `children` prop by default
-      startDecorator, // TSlottablePropsFactory provides ability to provide kind of `children` element for your slot
-      endDecorator, // same as ^
-      slots = {}, // slots are not receiving default value by default
-      slotProps = {}, // as well as slotProps
-      disabled, // here we just handle all props that we defined in `TButtonProps`
-      fullWidth,
-      size = "md",
-      variant = "solid",
-      color = "primary",
-      ...rest
-    } = inProps;
+const DefaultDecorator: React.FC<{ className?: string }> = ({ className }) => {
+  return <div className={className}>Default decorator</div>;
+};
 
-    const props = Object.assign({}, rest, { slots, slotProps }); // building a map with all important props for root slot and slot information
+export const Button: React.FC<ButtonProps> = (rootProps) => {
+  const { slots, slotProps, ...props } = rootProps;
+  const StartDecoratorSlot = useSlot("startDecorator", rootProps, {
+    slot: DefaultDecorator, // provide default decorator, but can be overridden by user
+  });
+  const EndDecoratorSlot = useSlot("startDecorator", rootProps);
 
-    const [SlotRoot, rootProps] = useSlot("root", {
-      ref, // ref is mandatory for the `root` slot
-      component,
-      className: clsx(
-        "button-default-className", // use Tailwind, jss, or any other styling solution you want
-        `button__size_${size}`,
-        `button__color_${color}`,
-        `button__variant_${variant}`,
-        "text-blue-400 text-xl text-green-500",
-        {
-          "button__width_full": fullWidth
-        },
-        className // don't forget that your users would like to customize this prop
-      ),
-      props,
-      extraProps: {
-        // optional `extraProps` field, which can include everything you want to send specifically to the slot component
-      },
-      // classNameMergeFn: twMerge, // if you need to normalize classNames you can pass a function reference
-    });
-
-    const [SlotStartDecorator, startDecoratorProps] = useSlot(
-      "startDecorator",
-      {
-        component: slots["startDecorator"] ?? ("div" as ElementType),
-        className: "start-decorator-className",
-        props,
-      }
-    );
-
-    const [SlotEndDecorator, endDecoratorProps] = useSlot("endDecorator", {
-      component: slots["endDecorator"] ?? ("div" as ElementType),
-      className: "end-decorator-className",
-      props,
-    });
-
-    // Wow! How easy to maintain it looks!!! Such declarative!
-    return (
-      <SlotRoot {...rootProps}>
-        {startDecorator ? (
-          <SlotStartDecorator {...startDecoratorProps}>
-            {startDecorator}
-          </SlotStartDecorator>
-        ) : null}
-        {children}
-        {endDecorator ? (
-          <SlotEndDecorator {...endDecoratorProps}>
-            {endDecorator}
-          </SlotEndDecorator>
-        ) : null}
-      </SlotRoot>
-    );
-  }
-);
+  return (
+    <button {...props}>
+      {/* ^^^ do not forget to handle not standard attributes, e.g. fullWidth ...*/}
+      <StartDecoratorSlot className="class-override" />
+      {/* ^^^ you can provide default className ^^^ */}
+      {props.children}
+      <EndDecoratorSlot />
+    </button>
+  );
+};
 ```
 
 Now your users can use this `Button`:
 
-```typescript
-import { Button } from "./MyButton";
+```tsx
+const MyCustomLabelComponent: React.FC = () => {
+  return <span>My custom label</span>;
+};
 
-export function HomePage() {
-  const buttonRef = useRef(null);
+export function HomePage(): React.JSX.Element {
   return (
     <div>
       <Button
-        // ref={buttonRef} // just in case if you need
-        startDecorator={<MySvgIcon />}
-        endDecorator={<span>no icon. just label.</span>}
         slots={{
-          endDecorator: MyCustomLabelComponent
+          endDecorator: MyCustomLabelComponent,
         }}
         slotProps={{
           startDecorator: {
-            prop1: "value"
-          }
+            prop1: "value",
+          },
         }}
-        className: "my-custom-button-className"
+        className="my-custom-button-className"
       >
         Click me!
       </Button>
@@ -149,7 +88,7 @@ export function HomePage() {
 }
 ```
 
-The package exposes three essential parts: `slottable`, the `useSlot` hook, and the `TSlottablePropsFactory` typescript type. Combining them together, you get a backbone for your fantastic components.
+As you can see, `StartDecoratorSlot` was predefined with default component, which will be always shown until user overrides it. However, the `EndDecoratorSlot` was not predefined, so it will be empty until user provides a component for it.
 
 ## License
 

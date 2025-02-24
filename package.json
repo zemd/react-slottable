@@ -3,7 +3,7 @@
   "type": "module",
   "version": "2.0.3",
   "license": "Apache-2.0",
-  "description": "Foundation for component libraries with highly customizable approach",
+  "description": "A lightweight concept to customize subcomponents in React",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -28,7 +28,8 @@
   },
   "keywords": [
     "react",
-    "components",
+    "component",
+    "subcomponent",
     "library",
     "slottable",
     "slots",
@@ -41,7 +42,7 @@
     "build": "tsup",
     "test": "vitest --run",
     "release": "tsup && changeset publish",
-    "readme": "github-readme build ./README.md.template --title \"React Slottable for advanced components\"",
+    "readme": "github-readme build ./README.md.template --title \"React Slottable for customizable components\"",
     "prepare": "husky",
     "lint": "eslint ."
   },
@@ -63,7 +64,7 @@
     "vitest": "^3.0.6"
   },
   "peerDependencies": {
-    "react": "*"
+    "react": ">19"
   },
   "engines": {
     "node": ">=22"

@@ -1,7 +1,6 @@
 import { render, renderHook } from "@testing-library/react";
 import { useSlot } from "./use-slot";
 import { describe, test, expect } from "vitest";
-import type { ElementType } from "react";
 
 describe("useSlot", () => {
   test("should return a function", () => {
@@ -9,7 +8,7 @@ describe("useSlot", () => {
     const { result } = renderHook(() => {
       return useSlot("root", {
         ref,
-        component: "div" as ElementType,
+        component: "div" as React.ElementType,
         props: {},
       });
     });
@@ -27,7 +26,7 @@ describe("useSlot", () => {
     >(() => {
       return useSlot("root", {
         ref,
-        component: "div" as ElementType,
+        component: "div" as React.ElementType,
         props: { id: "test" },
       });
     });
@@ -46,7 +45,7 @@ describe("useSlot", () => {
     >(() => {
       return useSlot("root", {
         ref,
-        component: "div" as ElementType,
+        component: "div" as React.ElementType,
         props: {},
         className: "test-class",
         classNameMergeFn: (className) => {
@@ -69,7 +68,7 @@ describe("useSlot", () => {
     >(() => {
       return useSlot("root", {
         ref,
-        component: "div" as ElementType,
+        component: "div" as React.ElementType,
         props: {},
         extraProps: { "data-test": "test" },
       });
