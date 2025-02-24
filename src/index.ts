@@ -1,2 +1,2 @@
 export { useSlot } from "./use-slot";
-export type * from "./types";
+export type { PropsWithSlots } from "./types";
