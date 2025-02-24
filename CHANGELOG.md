@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 3.0.1
+
+### Patch Changes
+
+- 12233bf: update bundle
+
 ## 3.0.0
 
 ### Major Changes
