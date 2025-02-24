@@ -3,7 +3,7 @@ export type Prettify<T> = {
 } & {};
 
 /**
- * A helper type that allows to define required for slots props.
+ * A helper type that allows to define proper slot props.
  *
  * Usage:
  * ```ts

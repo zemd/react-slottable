@@ -24,13 +24,6 @@ type SlotPropsProps<T extends Record<string, any>> = {
 
 /**
  * A hook that returns a component for a given slot.
- *
- * Slot is built from the following parts:
- * - `Slot` - a sub component.
- * - slot props - props that are needed for the `Slot`.
- *
- * SlotContainer is defined during the component construction. For example, when you create a
- * `Button` component, you
  */
 export function useSlot<
   ArgSlotType extends React.ElementType,
