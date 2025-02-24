@@ -41,7 +41,7 @@
   "scripts": {
     "build": "tsup --minify",
     "test": "vitest --run",
-    "release": "tsup && changeset publish",
+    "release": "pnpm run build && changeset publish",
     "readme": "github-readme build ./README.md.template --title \"React Slottable for customizable components\"",
     "prepare": "husky",
     "lint": "eslint ."
