@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 3.0.0
+
+### Major Changes
+
+- cd38dad: Make it lightweight, get rid of unnecessary burden
+
 ## 2.0.3
 
 ### Patch Changes

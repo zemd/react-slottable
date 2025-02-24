@@ -1,7 +1,7 @@
 {
   "name": "@zemd/react-slottable",
   "type": "module",
-  "version": "2.0.3",
+  "version": "3.0.0",
   "license": "Apache-2.0",
   "description": "A lightweight concept to customize subcomponents in React",
   "main": "./dist/index.cjs",
