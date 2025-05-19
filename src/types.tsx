@@ -1,3 +1,5 @@
+import type { ComponentProps, ElementType } from "react";
+
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
@@ -33,9 +35,9 @@ export type PropsWithSlots<
     ? {}
     : {
         slots?: {
-          [K in ArgSlots[number]]?: React.ElementType;
+          [K in ArgSlots[number]]?: ElementType;
         };
         slotProps?: {
-          [K in ArgSlots[number]]?: React.ComponentProps<React.ElementType>;
+          [K in ArgSlots[number]]?: ComponentProps<ElementType>;
         };
       });

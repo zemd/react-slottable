@@ -1,8 +1,13 @@
-import { useMemo } from "react";
+import React, {
+  type ComponentProps,
+  type ElementType,
+  type FC,
+  type PropsWithChildren,
+} from "react";
 import type { Prettify } from "./types";
 
 // eslint-disable-next-line react-refresh/only-export-components
-const SlotFragment: React.FC<React.PropsWithChildren<{ [x: string]: any }>> = ({
+const SlotFragment: FC<PropsWithChildren<{ [x: string]: any }>> = ({
   children,
 }) => {
   // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -10,11 +15,11 @@ const SlotFragment: React.FC<React.PropsWithChildren<{ [x: string]: any }>> = ({
 };
 SlotFragment.displayName = "@zemd/react-slottable/SlotFragment";
 
-type SlotOptions<T extends React.ElementType> = {
+type SlotOptions<T extends ElementType> = {
   slot?: T;
 };
 
-type SlotsProps<T extends Record<string, React.ElementType>> = {
+type SlotsProps<T extends Record<string, ElementType>> = {
   slots?: T;
 };
 
@@ -26,12 +31,12 @@ type SlotPropsProps<T extends Record<string, any>> = {
  * A hook that returns a component for a given slot.
  */
 export function useSlot<
-  ArgSlotType extends React.ElementType,
+  ArgSlotType extends ElementType,
   ArgSlotOptions extends SlotOptions<ArgSlotType>,
   ReturnComponent extends ArgSlotOptions extends SlotOptions<infer T>
     ? T
-    : React.ElementType,
-  ArgSlotsKeys extends Record<string, React.ElementType>,
+    : ElementType,
+  ArgSlotsKeys extends Record<string, ElementType>,
 >(
   name: keyof ArgSlotsKeys,
   props: Prettify<
@@ -41,15 +46,15 @@ export function useSlot<
 ): ReturnComponent {
   const { slots, slotProps } = props;
 
-  const Slot = useMemo(() => {
+  const Slot = React.useMemo(() => {
     return (slots?.[name] ?? options.slot ?? SlotFragment) as ReturnComponent;
   }, [name, slots, options.slot]);
 
-  return useMemo<ReturnComponent>(() => {
-    const WrappedComponent: React.FC<React.ComponentProps<ReturnComponent>> = (
+  return React.useMemo<ReturnComponent>(() => {
+    const WrappedComponent: FC<ComponentProps<ReturnComponent>> = (
       wrappedProps,
     ) => {
-      const mergedProps: React.ComponentProps<ReturnComponent> = {
+      const mergedProps: ComponentProps<ReturnComponent> = {
         ...slotProps?.[name],
         ...wrappedProps,
       };
