@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 3.0.2
+
+### Patch Changes
+
+- 45f804c: fix jsx runtime
+
 ## 3.0.1
 
 ### Patch Changes
