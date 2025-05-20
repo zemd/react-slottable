@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 3.0.4
+
+### Patch Changes
+
+- 17fab98: handle extra props from useSlot options
+
 ## 3.0.3
 
 ### Patch Changes
