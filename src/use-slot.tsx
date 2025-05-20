@@ -32,7 +32,8 @@ type SlotPropsProps<T extends Record<string, any>> = {
  */
 export function useSlot<
   ArgSlotType extends ElementType,
-  ArgSlotOptions extends SlotOptions<ArgSlotType>,
+  ArgExtraProps extends Partial<ComponentProps<ArgSlotType>>,
+  ArgSlotOptions extends SlotOptions<ArgSlotType> & ArgExtraProps,
   ReturnComponent extends ArgSlotOptions extends SlotOptions<infer T>
     ? T
     : ElementType,
@@ -42,13 +43,13 @@ export function useSlot<
   props: Prettify<
     SlotsProps<ArgSlotsKeys> & SlotPropsProps<Record<keyof ArgSlotsKeys, any>> // & { [k: string]: any }
   >,
-  options: ArgSlotOptions = {} as ArgSlotOptions,
+  { slot, ...extraProps }: ArgSlotOptions = {} as ArgSlotOptions,
 ): ReturnComponent {
   const { slots, slotProps } = props;
 
   const Slot = React.useMemo(() => {
-    return (slots?.[name] ?? options.slot ?? SlotFragment) as ReturnComponent;
-  }, [name, slots, options.slot]);
+    return (slots?.[name] ?? slot ?? SlotFragment) as ReturnComponent;
+  }, [name, slots, slot]);
 
   return React.useMemo<ReturnComponent>(() => {
     const WrappedComponent: FC<ComponentProps<ReturnComponent>> = (
@@ -57,9 +58,10 @@ export function useSlot<
       const mergedProps: ComponentProps<ReturnComponent> = {
         ...wrappedProps,
         ...slotProps?.[name],
+        ...extraProps,
       };
       return <Slot {...mergedProps} />;
     };
     return WrappedComponent as ReturnComponent;
-  }, [Slot, name, slotProps]);
+  }, [Slot, name, slotProps, extraProps]);
 }

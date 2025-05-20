@@ -87,4 +87,32 @@ describe("useSlot", () => {
 
     expect(container.querySelector("[data-testid='option-div']")).toBeTruthy();
   });
+
+  test("should merge extraProps from third argument", () => {
+    const CustomDiv = (props: React.HTMLProps<HTMLDivElement>) => (
+      <div data-testid="extra-props-div" id="initial-id" {...props} />
+    );
+
+    const props = { slotProps: { root: { id: "props-id" } } };
+
+    const { result } = renderHook(() =>
+      useSlot("root", props, {
+        slot: CustomDiv,
+        id: "custom-id",
+        "aria-label": "custom-label",
+      }),
+    );
+
+    const Component = result.current;
+    const { container } = render(
+      <Component id="default-id">Test Content</Component>,
+    );
+    const element = container.querySelector(
+      "[data-testid='extra-props-div']",
+    ) as HTMLElement;
+
+    expect(element).toHaveAttribute("id", "custom-id");
+    expect(element).toHaveAttribute("aria-label", "custom-label");
+    expect(element).toHaveTextContent("Test Content");
+  });
 });
