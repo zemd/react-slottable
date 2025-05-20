@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 3.0.3
+
+### Patch Changes
+
+- 9589579: merge props in correct order, fix vitest configuration
+
 ## 3.0.2
 
 ### Patch Changes
