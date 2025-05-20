@@ -50,7 +50,7 @@ describe("useSlot", () => {
         },
         slotProps: {
           root: {
-            className: "default-class",
+            className: "extra-class",
             "data-testid": "test-div",
           },
         },
@@ -59,7 +59,7 @@ describe("useSlot", () => {
 
     const Component = result.current;
     const { container } = render(
-      <Component className="extra-class">Test Content</Component>,
+      <Component className="default-class">Test Content</Component>,
     );
 
     const element = container.firstChild as HTMLElement;

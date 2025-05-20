@@ -55,8 +55,8 @@ export function useSlot<
       wrappedProps,
     ) => {
       const mergedProps: ComponentProps<ReturnComponent> = {
-        ...slotProps?.[name],
         ...wrappedProps,
+        ...slotProps?.[name],
       };
       return <Slot {...mergedProps} />;
     };
