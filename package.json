@@ -58,7 +58,7 @@
     "@zemd/github-readme": "^0.0.5",
     "@zemd/tsconfig": "^1.3.0",
     "eslint": "^9.21.0",
-    "happy-dom": "^17.1.4",
+    "happy-dom": "^18.0.1",
     "husky": "^9.1.7",
     "prettier": "^3.5.2",
     "react": "^19.0.0",
