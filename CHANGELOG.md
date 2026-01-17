@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 4.0.0
+
+### Major Changes
+
+- 6cb1773: Add new <Slot/> component, apply react 19 optimizations, add more examples
+
 ## 3.0.4
 
 ### Patch Changes
