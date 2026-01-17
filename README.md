@@ -12,7 +12,7 @@ The package provides a lightweight approach to give your component users ability
 
 ```bash
 npm install --save-dev @zemd/react-slottable
-pnpm add -D @zemd/react-slottable
+npm install -D @zemd/react-slottable
 ```
 
 ## Writing components
