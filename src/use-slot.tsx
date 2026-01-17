@@ -1,34 +1,47 @@
-import React, {
+import {
+  useCallback,
+  useMemo,
   type ComponentProps,
   type ElementType,
-  type FC,
-  type PropsWithChildren,
+  type ReactNode,
 } from "react";
 import type { Prettify } from "./types";
 
-// eslint-disable-next-line react-refresh/only-export-components
-const SlotFragment: FC<PropsWithChildren<{ [x: string]: any }>> = ({
-  children,
-}) => {
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <>{children}</>;
-};
-SlotFragment.displayName = "@zemd/react-slottable/SlotFragment";
-
-type SlotOptions<T extends ElementType> = {
-  slot?: T;
+type SlotOptions<ArgSlotType extends ElementType> = {
+  readonly slot?: ArgSlotType;
 };
 
-type SlotsProps<T extends Record<string, ElementType>> = {
-  slots?: T;
+type SlotsProps<ArgSlotsMap extends Record<string, ElementType>> = {
+  readonly slots?: ArgSlotsMap;
 };
 
-type SlotPropsProps<T extends Record<string, any>> = {
-  slotProps?: Partial<T>;
+type SlotPropsProps<ArgSlotPropsMap extends Record<string, unknown>> = {
+  readonly slotProps?: Partial<ArgSlotPropsMap>;
 };
+
+export type SlotRenderFunction<ArgSlotType extends ElementType> = (
+  slotProps: ComponentProps<ArgSlotType>,
+) => ReactNode;
 
 /**
- * A hook that returns a component for a given slot.
+ * A hook that returns a render function for a given slot.
+ *
+ * This design is React Compiler compatible - instead of returning a component
+ * (which would be created during render), it returns a render function that
+ * resolves the slot and merges props correctly.
+ *
+ * @example
+ * ```tsx
+ * const renderStartDecorator = useSlot("startDecorator", props, {
+ *   slot: DefaultDecorator,
+ * });
+ * return (
+ *   <button>
+ *     {renderStartDecorator({ className: "custom" })}
+ *     {props.children}
+ *   </button>
+ * );
+ * ```
  */
 export function useSlot<
   ArgSlotType extends ElementType,
@@ -41,27 +54,55 @@ export function useSlot<
 >(
   name: keyof ArgSlotsKeys,
   props: Prettify<
-    SlotsProps<ArgSlotsKeys> & SlotPropsProps<Record<keyof ArgSlotsKeys, any>> // & { [k: string]: any }
+    SlotsProps<ArgSlotsKeys> &
+      SlotPropsProps<Record<keyof ArgSlotsKeys, unknown>>
   >,
-  { slot, ...extraProps }: ArgSlotOptions = {} as ArgSlotOptions,
-): ReturnComponent {
+  options: ArgSlotOptions = {} as ArgSlotOptions,
+): SlotRenderFunction<ReturnComponent> {
+  // Development mode warnings
+  if (process.env.NODE_ENV === "development") {
+    if (typeof name !== "string" && typeof name !== "symbol") {
+      console.warn("useSlot: slot name must be a string or symbol");
+    }
+  }
+
   const { slots, slotProps } = props;
+  const { slot } = options;
 
-  const Slot = React.useMemo(() => {
-    return (slots?.[name] ?? slot ?? SlotFragment) as ReturnComponent;
-  }, [name, slots, slot]);
+  // Memoize the resolved slot component
+  const Slot = useMemo(
+    () => (slots?.[name] ?? slot ?? null) as ReturnComponent | null,
+    [slots, name, slot],
+  );
 
-  return React.useMemo<ReturnComponent>(() => {
-    const WrappedComponent: FC<ComponentProps<ReturnComponent>> = (
-      wrappedProps,
-    ) => {
-      const mergedProps: ComponentProps<ReturnComponent> = {
-        ...wrappedProps,
-        ...slotProps?.[name],
-        ...extraProps,
-      };
+  // Memoize the resolved slot props
+  const resolvedSlotProps = useMemo(() => slotProps?.[name], [slotProps, name]);
+
+  // Memoize extra props to ensure stable reference
+  // Using options as dependency since extraProps is derived from it
+  const stableExtraProps = useMemo(() => {
+    const { slot: _slot, ...rest } = options;
+    return rest;
+  }, [options]);
+
+  // Memoize the render function for performance
+  const renderSlot = useCallback(
+    (componentProps: ComponentProps<ReturnComponent>): ReactNode => {
+      // Return null if no slot is provided
+      if (Slot === null) {
+        return null;
+      }
+
+      const mergedProps = {
+        ...componentProps,
+        ...(resolvedSlotProps as object),
+        ...stableExtraProps,
+      } as ComponentProps<ReturnComponent>;
+
       return <Slot {...mergedProps} />;
-    };
-    return WrappedComponent as ReturnComponent;
-  }, [Slot, name, slotProps, extraProps]);
+    },
+    [Slot, resolvedSlotProps, stableExtraProps],
+  );
+
+  return renderSlot;
 }

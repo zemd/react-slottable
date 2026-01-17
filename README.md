@@ -1,32 +1,42 @@
-# React Slottable for customizable components
+# React Slottable
 
-> A lightweight concept to customize subcomponents in React
+> A lightweight library for customizing subcomponents in React
 
-[![](https://img.shields.io/npm/v/@zemd/react-slottable?color=%230000ff&labelColor=%23000)](https://www.npmjs.com/package/@zemd/react-slottable)
+[![npm version](https://img.shields.io/npm/v/@zemd/react-slottable?color=%230000ff&labelColor=%23000)](https://www.npmjs.com/package/@zemd/react-slottable)
 
-The package provides a lightweight approach to give your component users ability to customize it's subcomponents easily. The idea is highly inspired by [Material-UI](https://mui.com/x/common-concepts/custom-components/).
+This package provides a lightweight approach that allows your component users to easily customize nested subcomponents. The concept is inspired by [Material UI's slots pattern](https://mui.com/x/common-concepts/custom-components/).
 
-## Usage
+## Features
+
+- Simple API with `useSlot` hook and `Slot` component
+- Compatible with React Compiler
+- TypeScript support with full type inference
+- Optimized with `useMemo` and `useCallback` for performance
+- Minimal bundle size with zero dependencies
+- Development mode warnings for debugging
 
 ## Installation
 
 ```bash
-npm install --save-dev @zemd/react-slottable
-npm install -D @zemd/react-slottable
+npm install @zemd/react-slottable
+pnpm add @zemd/react-slottable
+yarn add @zemd/react-slottable
 ```
 
-## Writing components
+## Quick Start
 
-The core concept of the library is **slot**. A **slot** is a part of a component that can be overridden and/or customized. For example, you want to create a `Calendar`, but you do not want to create a numerous amount of props to customize nested components. Instead, you can divide your components on **slots** and provide your users with the ability to customize them.
+The core concept of this library is the **slot**. A slot is a part of a component that can be overridden or customized by the consumer. Instead of creating numerous props to customize nested components, you can divide your component into slots and let users provide their own implementations.
 
-Let's create a simple `Button` component with `startDecorator` and `endDecorator` slots to show how it works:
+### Creating a Slottable Component
+
+Here is how to create a simple `Button` component with `startDecorator` and `endDecorator` slots:
 
 ```tsx
 import { type PropsWithSlots, useSlot } from "@zemd/react-slottable";
 
+// Define your component props with slots
 type ButtonProps = PropsWithSlots<
   React.PropsWithChildren<{
-    // here you define your regular component props
     fullWidth?: boolean;
     disabled?: boolean;
     size?: "sm" | "md" | "xl";
@@ -34,66 +44,255 @@ type ButtonProps = PropsWithSlots<
     color?: "primary" | "secondary";
     className?: string;
   }>,
-  ["startDecorator", "endDecorator"] // here you define your slots
+  ["startDecorator", "endDecorator"]
 >;
 
+// Optional: define a default component for a slot
 const DefaultDecorator: React.FC<{ className?: string }> = ({ className }) => {
   return <div className={className}>Default decorator</div>;
 };
 
-export const Button: React.FC<ButtonProps> = (rootProps) => {
-  const { slots, slotProps, ...props } = rootProps;
-  const StartDecoratorSlot = useSlot("startDecorator", rootProps, {
-    slot: DefaultDecorator, // provide default decorator, but can be overridden by user
+export const Button: React.FC<ButtonProps> = (props) => {
+  // useSlot returns a render function (React Compiler compatible)
+  const renderStartDecorator = useSlot("startDecorator", props, {
+    slot: DefaultDecorator, // provide a default component
   });
-  const EndDecoratorSlot = useSlot("startDecorator", rootProps);
+  const renderEndDecorator = useSlot("endDecorator", props);
 
   return (
-    <button {...props}>
-      {/* ^^^ do not forget to handle not standard attributes, e.g. fullWidth ...*/}
-      <StartDecoratorSlot className="class-override" />
-      {/* ^^^ you can provide default className ^^^ */}
+    <button className={props.className}>
+      {renderStartDecorator({ className: "decorator-class" })}
       {props.children}
-      <EndDecoratorSlot />
+      {renderEndDecorator({})}
     </button>
   );
 };
 ```
 
-Now your users can use this `Button`:
+### Using the `Slot` Component (JSX-centric API)
+
+For developers who prefer a more declarative JSX syntax, the `Slot` component provides an alternative to the `useSlot` hook:
 
 ```tsx
-const MyCustomLabelComponent: React.FC = () => {
-  return <span>My custom label</span>;
+import { type PropsWithSlots, Slot } from "@zemd/react-slottable";
+
+type AlertProps = PropsWithSlots<{ type: "info" | "error"; title: string; message: string }, ["icon", "title", "message"]>;
+
+export const Alert: React.FC<AlertProps> = (props) => {
+  return (
+    <div role="alert">
+      <Slot name="icon" parentProps={props} default="span">
+        {props.type === "info" ? "ℹ️" : "❌"}
+      </Slot>
+      <Slot name="title" parentProps={props} default="div">
+        {props.title}
+      </Slot>
+      <Slot name="message" parentProps={props} default="div">
+        {props.message}
+      </Slot>
+    </div>
+  );
+};
+```
+
+### Using a Slottable Component
+
+Consumers can now customize the slots by providing their own components:
+
+```tsx
+const MyCustomDecorator: React.FC = () => {
+  return <span>Custom decorator</span>;
 };
 
-export function HomePage(): React.JSX.Element {
+export function App(): React.JSX.Element {
   return (
-    <div>
-      <Button
-        slots={{
-          endDecorator: MyCustomLabelComponent,
-        }}
-        slotProps={{
-          startDecorator: {
-            prop1: "value",
-          },
-        }}
-        className="my-custom-button-className"
-      >
-        Click me!
-      </Button>
-    </div>
+    <Button
+      slots={{
+        endDecorator: MyCustomDecorator,
+      }}
+      slotProps={{
+        startDecorator: {
+          className: "custom-class",
+        },
+      }}
+      className="my-button"
+    >
+      Click me
+    </Button>
   );
 }
 ```
 
-As you can see, `StartDecoratorSlot` was predefined with default component, which will be always shown until user overrides it. However, the `EndDecoratorSlot` was not predefined, so it will be empty until user provides a component for it.
+## API Reference
+
+### `useSlot`
+
+A hook that returns a memoized render function for a given slot.
+
+```tsx
+const renderSlot = useSlot(name, props, options);
+```
+
+**Parameters:**
+
+- `name` - The name of the slot
+- `props` - The component props containing `slots` and `slotProps`
+- `options` - Optional configuration object
+  - `slot` - Default component to render if no slot is provided
+  - `...extraProps` - Additional props to pass to the slot (highest priority)
+
+**Returns:**
+
+A memoized render function (`SlotRenderFunction`) that accepts props and returns the rendered slot.
+
+### `Slot`
+
+A JSX component alternative to the `useSlot` hook.
+
+```tsx
+<Slot name="header" parentProps={props} default="div" className="header">
+  {children}
+</Slot>
+```
+
+**Props:**
+
+- `name` - The name of the slot to render
+- `parentProps` - The parent component props containing `slots` and `slotProps`
+- `default` - Default component to render if no slot is provided
+- `children` - Children to render inside the slot
+- `...rest` - Additional props passed to the slot component
+
+### `PropsWithSlots<Props, SlotNames>`
+
+A type helper that extends your component props with `slots` and `slotProps` using a simple array of slot names.
+
+```tsx
+type MyComponentProps = PropsWithSlots<{ title: string }, ["header", "footer"]>;
+```
+
+This adds the following optional props to your component:
+
+- `slots` - An object mapping slot names to custom components
+- `slotProps` - An object mapping slot names to props passed to each slot
+
+### `PropsWithTypedSlots<Props, SlotsMap>`
+
+A type helper for advanced use cases that provides better TypeScript inference for slot-specific props.
+
+```tsx
+type ButtonSlots = {
+  startDecorator: React.FC<{ icon?: string; className?: string }>;
+  endDecorator: React.FC<{ label?: string }>;
+};
+
+type ButtonProps = PropsWithTypedSlots<{ disabled?: boolean }, ButtonSlots>;
+
+// Now slotProps will have proper type inference:
+// slotProps.startDecorator accepts { icon?: string; className?: string }
+// slotProps.endDecorator accepts { label?: string }
+```
+
+### `SlotRenderFunction<T>`
+
+The type of the render function returned by `useSlot`.
+
+```tsx
+import type { SlotRenderFunction } from "@zemd/react-slottable";
+
+type MyRenderFn = SlotRenderFunction<typeof MyComponent>;
+```
+
+## How It Works
+
+When a slot is rendered:
+
+1. If the user provides a custom component via `slots`, it is used
+2. Otherwise, the default component from `options.slot` is used
+3. If neither is provided, `null` is returned (nothing is rendered)
+
+Props are merged in the following order (later values override earlier ones):
+
+1. Props passed directly to the render function
+2. Props from `slotProps`
+3. Extra props from the `options` object
+
+## Usage with `useSyncExternalStore`
+
+The library works seamlessly with external state management. Here's an example using `useSyncExternalStore`:
+
+```tsx
+import { useSyncExternalStore } from "react";
+import { useSlot, type PropsWithSlots } from "@zemd/react-slottable";
+
+// Create an external store
+function createCounterStore(initialValue = 0) {
+  let state = { count: initialValue };
+  const listeners = new Set<() => void>();
+
+  return {
+    getSnapshot: () => state,
+    subscribe: (listener: () => void) => {
+      listeners.add(listener);
+      return () => listeners.delete(listener);
+    },
+    increment: () => {
+      state = { count: state.count + 1 };
+      listeners.forEach((l) => l());
+    },
+  };
+}
+
+const store = createCounterStore(0);
+
+// Counter component with customizable slots
+type CounterProps = PropsWithSlots<{ min?: number; max?: number }, ["display", "incrementButton"]>;
+
+const Counter: React.FC<CounterProps> = (props) => {
+  const { count } = useSyncExternalStore(store.subscribe, store.getSnapshot);
+
+  const renderDisplay = useSlot("display", props, { slot: "span" });
+  const renderButton = useSlot("incrementButton", props, { slot: "button" });
+
+  return (
+    <div>
+      {renderDisplay({ children: count })}
+      {renderButton({
+        onClick: store.increment,
+        disabled: count >= (props.max ?? Infinity),
+        children: "+",
+      })}
+    </div>
+  );
+};
+
+// Multiple counters can share the same store with different slot implementations
+function App() {
+  return (
+    <>
+      <Counter />
+      <Counter
+        slots={{
+          display: ({ children }) => <strong>{children}</strong>,
+        }}
+      />
+    </>
+  );
+}
+```
+
+## Performance
+
+The library is optimized for performance:
+
+- **Memoized slot resolution** - The resolved slot component is memoized with `useMemo`
+- **Memoized render function** - The render function is memoized with `useCallback`
+- **Stable references** - Extra props and slot props are memoized to prevent unnecessary re-renders
 
 ## License
 
-The `@zemd/react-slottable` is licensed under **[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)** 😇.
+This project is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ## 💙 💛 Donate
 
-[![](https://img.shields.io/static/v1?color=blue&label=UNITED24&message=support+Ukraine)](https://u24.gov.ua/)
+[![Support Ukraine](https://img.shields.io/static/v1?color=blue&label=UNITED24&message=support+Ukraine)](https://u24.gov.ua/)

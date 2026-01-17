@@ -1,35 +1,39 @@
-import type { PropsWithSlots } from "./types";
-import { useSlot } from "./use-slot";
+import type { PropsWithSlots } from "../types";
+import { useSlot } from "../use-slot";
 
-const DefaultDecorator: React.FC<{ className?: string }> = ({ className }) => {
+const DefaultDecorator: React.FC<{ readonly className?: string }> = ({
+  className,
+}) => {
   return <div className={className}>Default decorator</div>;
 };
 
 type ButtonProps = PropsWithSlots<
   React.PropsWithChildren<{
     // here you define your regular component props
-    fullWidth?: boolean;
-    disabled?: boolean;
-    size?: "sm" | "md" | "xl";
-    variant?: "solid" | "outlined";
-    color?: "primary" | "secondary";
-    className?: string;
+    readonly fullWidth?: boolean;
+    readonly disabled?: boolean;
+    readonly size?: "sm" | "md" | "xl";
+    readonly variant?: "solid" | "outlined";
+    readonly color?: "primary" | "secondary";
+    readonly className?: string;
   }>,
   ["startDecorator", "endDecorator"] // here you define your slots
 >;
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const StartDecoratorSlot = useSlot("startDecorator", props, {
+  // useSlot now returns a render function instead of a component
+  // This is React Compiler compatible - no component creation during render
+  const renderStartDecorator = useSlot("startDecorator", props, {
     slot: DefaultDecorator, // provide default decorator, but can be overridden by user
   });
-  const EndDecoratorSlot = useSlot("endDecorator", props);
+  const renderEndDecorator = useSlot("endDecorator", props);
 
   return (
     <button className={props.className}>
-      <StartDecoratorSlot className="class-override" />
+      {renderStartDecorator({ className: "class-override" })}
       {/* ^^^ you can provide default className ^^^ */}
       {props.children}
-      <EndDecoratorSlot />
+      {renderEndDecorator({})}
     </button>
   );
 };

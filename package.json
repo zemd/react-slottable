@@ -5,12 +5,13 @@
   "license": "Apache-2.0",
   "description": "A lightweight concept to customize subcomponents in React",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     }
   },
   "author": {
@@ -41,29 +42,30 @@
   "scripts": {
     "build": "tsdown --minify",
     "test": "vitest --run",
+    "changeset": "changeset",
     "release": "changeset publish",
     "prepare": "husky",
-    "lint": "eslint ."
+    "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
-    "@swc/core": "^1.10.18",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^5.0.0",
-    "@zemd/eslint-react": "^1.0.5",
-    "@zemd/tsconfig": "^1.3.0",
-    "eslint": "^9.21.0",
-    "happy-dom": "^20.0.0",
+    "@changesets/cli": "^2.29.8",
+    "@swc/core": "^1.15.8",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@zemd/eslint-react": "^1.0.44",
+    "@zemd/tsconfig": "^1.5.0",
+    "eslint": "^9.39.2",
+    "happy-dom": "^20.3.1",
     "husky": "^9.1.7",
-    "prettier": "^3.5.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "prettier": "^3.8.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "tsdown": "^0.20.0-beta.3",
-    "typescript": "^5.7.3",
-    "vitest": "^4.0.4"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.17"
   },
   "peerDependencies": {
     "react": ">=18"
