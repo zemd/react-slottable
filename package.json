@@ -12,7 +12,8 @@
       "types": "./dist/index.d.mts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "author": {
     "name": "Dmytro Zelenetskyi",
@@ -48,24 +49,24 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.8",
-    "@swc/core": "^1.15.8",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.1",
-    "@types/react": "^19.2.8",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.2",
-    "@zemd/eslint-react": "^2.0.1",
-    "@zemd/tsconfig": "^1.5.0",
-    "eslint": "^10.0.0",
-    "happy-dom": "^20.3.1",
-    "husky": "^9.1.7",
-    "prettier": "^3.8.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "tsdown": "^0.20.0-beta.3",
-    "typescript": "^5.9.3",
-    "vitest": "^4.0.17"
+    "@changesets/cli": "2.29.8",
+    "@swc/core": "1.15.11",
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.2",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.4",
+    "@zemd/eslint-react": "2.0.3",
+    "@zemd/tsconfig": "1.5.0",
+    "eslint": "10.0.0",
+    "happy-dom": "20.6.3",
+    "husky": "9.1.7",
+    "prettier": "3.8.1",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "tsdown": "0.20.3",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18"
   },
   "peerDependencies": {
     "react": ">=18"
