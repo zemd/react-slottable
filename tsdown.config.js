@@ -7,6 +7,7 @@ export default defineConfig({
   clean: true,
   dts: true,
   format: ["cjs", "esm"],
+  tsconfig: "tsconfig.build.json",
   external: ["react"],
-  target: false,
+  target: "es2020",
 });
