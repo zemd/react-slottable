@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 4.0.2
+
+### Patch Changes
+
+- 90eafee: Fix build script
+
 ## 4.0.1
 
 ### Patch Changes
