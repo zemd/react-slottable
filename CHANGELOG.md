@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 4.0.1
+
+### Patch Changes
+
+- cbee25a: Update dependencies
+
 ## 4.0.0
 
 ### Major Changes
