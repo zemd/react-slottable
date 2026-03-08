@@ -49,7 +49,7 @@
     "lint": "eslint \"**/*.{ts,tsx}\""
   },
   "devDependencies": {
-    "@changesets/cli": "2.29.8",
+    "@changesets/cli": "2.30.0",
     "@swc/core": "1.15.18",
     "@testing-library/jest-dom": "6.9.1",
     "@testing-library/react": "16.3.2",
@@ -58,13 +58,13 @@
     "@vitejs/plugin-react": "5.1.4",
     "@zemd/eslint-react": "2.0.4",
     "@zemd/tsconfig": "1.5.0",
-    "eslint": "10.0.2",
-    "happy-dom": "20.7.0",
+    "eslint": "10.0.3",
+    "happy-dom": "20.8.3",
     "husky": "9.1.7",
     "prettier": "3.8.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tsdown": "0.20.3",
+    "tsdown": "0.21.0",
     "typescript": "5.9.3",
     "vitest": "4.0.18"
   },
