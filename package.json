@@ -59,7 +59,7 @@
     "@zemd/eslint-react": "2.0.5",
     "@zemd/tsconfig": "1.5.0",
     "eslint": "10.1.0",
-    "happy-dom": "20.8.4",
+    "happy-dom": "20.8.9",
     "husky": "9.1.7",
     "prettier": "3.8.1",
     "react": "19.2.4",
