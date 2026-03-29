@@ -56,17 +56,17 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "6.0.1",
-    "@zemd/eslint-react": "2.0.5",
-    "@zemd/tsconfig": "1.5.0",
+    "@zemd/eslint-react": "3.0.0",
+    "@zemd/tsconfig": "1.6.0",
     "eslint": "10.1.0",
     "happy-dom": "20.8.9",
     "husky": "9.1.7",
     "prettier": "3.8.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "tsdown": "0.21.4",
-    "typescript": "5.9.3",
-    "vitest": "4.1.0"
+    "tsdown": "0.21.7",
+    "typescript": "6.0.2",
+    "vitest": "4.1.2"
   },
   "peerDependencies": {
     "react": ">=18"

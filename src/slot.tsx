@@ -58,11 +58,11 @@ export function Slot<
 >({
   name,
   parentProps,
-  default: defaultSlot,
+  default: defaultSlot = "div" as ArgSlotType,
   children,
   ...slotProps
 }: SlotComponentProps<ArgSlotName, ArgSlotType, ArgSlotsMap>): ReactNode {
-  const options = defaultSlot ? { slot: defaultSlot } : {};
+  const options = { slot: defaultSlot };
   const renderSlot = useSlot(name, parentProps, options);
 
   return renderSlot({
