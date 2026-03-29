@@ -1,5 +1,11 @@
 # @zemd/react-slottable
 
+## 4.0.3
+
+### Patch Changes
+
+- 1dc803c: Use div as default slot by default
+
 ## 4.0.2
 
 ### Patch Changes
